@@ -12,7 +12,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-green?style=flat-square" alt="License"></a>
 </p>
 <p align="center">
-  <b>Yunbei Zhang, Shuaicheng Niu, Chengyi Cai, Feng Liu, Jihun Hamm</b>
+  <b>Yunbei Zhang&nbsp;&nbsp;&emsp;&emsp;Shuaicheng Niu&nbsp;&nbsp;&emsp;&emsp;Chengyi Cai&nbsp;&nbsp;&emsp;&emsp;Feng Liu&nbsp;&nbsp;&emsp;&emsp;Jihun Hamm</b>
 </p>
 
 
@@ -89,13 +89,7 @@ If you find this work useful, please cite:
 
 ## Acknowledgements
 
-Great thanks to the following excellent works, from which this repository draws implementation details and design inspiration:
-
-- [FOA](https://github.com/mr-eggplant/FOA) for the backpropagation-free TTA scaffold (data loaders, baseline trainer, and test-time plumbing around ViT backbones).
-- [BayesianLM](https://github.com/tmlr-group/BayesianLM) for reference implementations of visual reprogramming (VR) and label mapping used by our PadPrompter + ProbFuser components.
-- [AReS](https://github.com/yunbeizhang/AReS) for patterns around reliable-and-diverse sample filtering that we adapt in the prompt-learning-oriented filter.
-
-We thank the authors for making their code public.
+This repository builds on [FOA](https://github.com/mr-eggplant/FOA), [BayesianLM](https://github.com/tmlr-group/BayesianLM), and [AReS](https://github.com/yunbeizhang/AReS). Thanks to the authors for open-sourcing their code.
 
 ## License
 
