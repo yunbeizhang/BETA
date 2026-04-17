@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BETA: Adapting in the Dark. Test-Time Adaptation for Black-Box Models</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <style>
+        :root {
+            --primary: #6A1B9A;
+            --accent: #AF5FFF;
+            --accent-dark: #8E24AA;
+            --accent-light: #F3E5F5;
+            --accent-soft: #EADCFF;
+            --bg: #fdfdfd;
+            --text: #2c2235;
+            --text-light: #6b5f78;
+            --border: #e5dced;
+            --card-bg: #ffffff;
+            --highlight: #F6ECFF;
+            --green: #0f8f63;
+            --red: #b83a5a;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: var(--accent-dark); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .container { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+
+        .hero {
+            padding: 64px 0 40px;
+            text-align: center;
+            background: linear-gradient(175deg, #F6ECFF 0%, #ffffff 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        .venue-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 5px 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(175,95,255,0.28);
+        }
+        .venue-badge .sep { opacity: 0.55; margin: 0 6px; }
+        .hero h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.3;
+            max-width: 820px;
+            margin: 0 auto 8px;
+        }
+        .hero .tagline {
+            font-family: 'Noto Serif', serif;
+            font-style: italic;
+            color: var(--accent-dark);
+            font-size: 1.6rem;
+            font-weight: 400;
+            line-height: 1.35;
+            margin-bottom: 24px;
+        }
+        .authors {
+            font-size: 15px;
+            color: var(--text);
+            line-height: 1.9;
+            max-width: 780px;
+            margin: 0 auto 12px;
+        }
+
+        .btn-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 28px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: #521476; text-decoration: none; }
+        .btn-outline { background: #fff; color: var(--primary); border: 1.5px solid var(--primary); }
+        .btn-outline:hover { background: var(--accent-light); text-decoration: none; }
+
+        section { padding: 48px 0; }
+        section + section { border-top: 1px solid var(--border); }
+        .section-title {
+            font-family: 'Noto Serif', serif;
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .section-sub {
+            font-family: 'Noto Serif', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin: 22px 0 12px;
+        }
+
+        .abstract-box {
+            background: var(--highlight);
+            border-left: 4px solid var(--accent);
+            padding: 24px 28px;
+            border-radius: 0 8px 8px 0;
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .news {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin-bottom: 12px;
+        }
+        .news ul { list-style: none; }
+        .news li {
+            padding: 6px 0;
+            border-bottom: 1px dashed #efe6f8;
+            font-size: 14.5px;
+        }
+        .news li:last-child { border-bottom: none; }
+        .news .date {
+            display: inline-block;
+            min-width: 140px;
+            color: var(--accent-dark);
+            font-weight: 700;
+            font-variant: tabular-nums;
+        }
+        .news .pill {
+            display: inline-block;
+            background: var(--accent-light);
+            color: var(--accent-dark);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-right: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .figure {
+            margin: 32px 0;
+            text-align: center;
+        }
+        .figure img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 12px rgba(106,27,154,0.08);
+        }
+        .figure-caption {
+            margin-top: 12px;
+            font-size: 13.5px;
+            color: var(--text-light);
+            max-width: 760px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        .figure-caption strong { color: var(--text); }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin: 24px 0;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        .table-caption {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+        }
+        thead { background: var(--primary); color: #fff; }
+        th {
+            padding: 10px 14px;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+        }
+        td {
+            padding: 8px 14px;
+            text-align: center;
+            border-bottom: 1px solid #f1eaf8;
+        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: #faf4ff; }
+        tr.highlight { background: var(--accent-light) !important; font-weight: 600; }
+        td.method-name { text-align: left; font-weight: 500; }
+        .gain { color: var(--green); font-weight: 600; font-size: 12px; }
+        .loss { color: var(--red); font-weight: 600; font-size: 12px; }
+        .check-mark { color: var(--green); font-weight: 700; }
+        .cross-mark { color: var(--red); font-weight: 700; }
+        .access-tag {
+            display: inline-block;
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 1px 7px;
+            border-radius: 9px;
+            color: #fff;
+            letter-spacing: 0.3px;
+        }
+        .white-box { background: #b49dcc; }
+        .gray-box { background: #7d6893; }
+        .black-box { background: #3f2451; }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .result-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.18s;
+        }
+        .result-card:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(106,27,154,0.12); }
+        .result-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1.2;
+        }
+        .result-card .label {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 6px;
+        }
+
+        .fig-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 32px 0;
+        }
+        @media (max-width: 680px) {
+            .fig-row { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.75rem; }
+            .news .date { min-width: auto; display: block; }
+        }
+
+        .analytic-box {
+            background: #fbf6ff;
+            border: 1px dashed var(--accent);
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-size: 14px;
+            margin: 14px 0 8px;
+            color: var(--text);
+        }
+        .analytic-box strong { color: var(--primary); }
+
+        .llm-box {
+            background: linear-gradient(135deg, #faf4ff 0%, #f3e9ff 100%);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--accent);
+            border-radius: 10px;
+            padding: 22px 26px;
+            margin: 18px 0;
+        }
+        .llm-box blockquote {
+            font-family: 'Noto Serif', serif;
+            font-style: italic;
+            color: var(--primary);
+            border-left: 3px solid var(--accent);
+            padding: 4px 0 4px 16px;
+            margin: 14px 0;
+            font-size: 14.5px;
+            line-height: 1.7;
+        }
+        .llm-box blockquote cite {
+            display: block;
+            margin-top: 8px;
+            font-size: 12.5px;
+            font-style: normal;
+            color: var(--text-light);
+        }
+        .analogy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .analogy-grid > div {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 18px;
+        }
+        .analogy-grid h4 {
+            font-family: 'Noto Serif', serif;
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+        .analogy-grid ul { padding-left: 18px; font-size: 13.5px; line-height: 1.8; }
+        @media (max-width: 680px) {
+            .analogy-grid { grid-template-columns: 1fr; }
+        }
+
+        .bibtex-box {
+            background: #f6eefd;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 24px;
+            font-family: 'Courier New', monospace;
+            font-size: 12.5px;
+            line-height: 1.65;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            position: relative;
+            color: #3d2458;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .copy-btn:hover { background: var(--primary); }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+        }
+        footer a { color: var(--accent-dark); }
+
+        .method-heading {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 24px 0 10px;
+            font-family: 'Noto Serif', serif;
+        }
+        p + p { margin-top: 14px; }
+        code.inline {
+            background: #f6eefd;
+            color: #4a1c6b;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+    <div class="container">
+        <span class="venue-badge">
+            &#127942;&nbsp; ICLR 2026 TTU Workshop <span class="sep">&middot;</span> Oral
+        </span>
+        <h1>Adapting in the Dark</h1>
+        <div class="tagline">Efficient and Stable Test-Time Adaptation for Black-Box Models</div>
+
+        <div class="authors">
+            Yunbei Zhang<sup>1</sup>,
+            Shuaicheng Niu<sup>2</sup>,
+            Chengyi Cai<sup>3</sup>,
+            Feng Liu<sup>3</sup>,
+            Jihun Hamm<sup>1</sup>
+        </div>
+
+        <div class="btn-row">
+            <a class="btn btn-primary" href="https://openreview.net/pdf?id=v56b8I1tua" target="_blank">
+                <i class="fas fa-file-pdf"></i> Paper
+            </a>
+            <a class="btn btn-outline" href="https://github.com/yunbeizhang/BETA" target="_blank">
+                <i class="fab fa-github"></i> Code
+            </a>
+            <a class="btn btn-outline" href="#bibtex">
+                <i class="fas fa-quote-right"></i> BibTeX
+            </a>
+        </div>
+    </div>
+</header>
+
+<main>
+
+<!-- NEWS -->
+<section>
+    <div class="container">
+        <h2 class="section-title">News</h2>
+        <div class="news">
+            <ul>
+                <li>
+                    <span class="date">Apr 16, 2026</span>
+                    <span class="pill">CODE</span>
+                    Code released.
+                </li>
+                <li>
+                    <span class="date">Mar 07, 2026</span>
+                    <span class="pill">ORAL</span>
+                    &#127942; Selected as <strong>Oral Presentation</strong> at the Third Workshop on Test-Time Updates (TTU).
+                </li>
+                <li>
+                    <span class="date">Mar 01, 2026</span>
+                    <span class="pill">ACCEPT</span>
+                    Accepted to the Third Workshop on <strong>Test-Time Updates (TTU)</strong>, ICLR 2026 Workshop.
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ABSTRACT -->
+<section>
+    <div class="container">
+        <h2 class="section-title">Abstract</h2>
+        <div class="abstract-box">
+            Test-Time Adaptation (TTA) for black-box models accessible only via APIs remains a largely unexplored challenge. Existing approaches such as post-hoc output refinement offer limited adaptive capacity, while Zeroth-Order Optimization (ZOO) enables input-space adaptation but faces high query costs and optimization challenges in the unsupervised TTA setting. We introduce <strong>BETA</strong> (<u>B</u>lack-box <u>E</u>fficient <u>T</u>est-time <u>A</u>daptation), a framework that addresses these limitations by employing a lightweight, local white-box <em>steering model</em> to create a tractable gradient pathway. Through a <em>prediction harmonization</em> technique combined with <em>consistency regularization</em> and <em>prompt learning-oriented filtering</em>, BETA enables stable adaptation with no additional API calls and negligible latency beyond standard inference. On ImageNet-C, BETA achieves a <strong>+7.1%</strong> accuracy gain on ViT-B/16 and <strong>+3.4%</strong> on CLIP, surpassing strong white-box and gray-box methods including TENT and TPT. On a commercial API, BETA achieves comparable performance to ZOO at <strong>250&times; lower cost</strong>.
+        </div>
+    </div>
+</section>
+
+<!-- KEY RESULTS -->
+<section>
+    <div class="container">
+        <h2 class="section-title">Key Results at a Glance</h2>
+        <div class="result-grid">
+            <div class="result-card">
+                <div class="number">+7.1%</div>
+                <div class="label">ImageNet-C accuracy gain<br>(ViT-B/16, black-box)</div>
+            </div>
+            <div class="result-card">
+                <div class="number">+3.4%</div>
+                <div class="label">ImageNet-C accuracy gain<br>(CLIP)</div>
+            </div>
+            <div class="result-card">
+                <div class="number">250&times;</div>
+                <div class="label">Cheaper than ZOO<br>(Clarifai commercial API)</div>
+            </div>
+            <div class="result-card">
+                <div class="number">1</div>
+                <div class="label">API call per test sample<br>(vs. 16+ for ZOO)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MOTIVATION / SETTING -->
+<section>
+    <div class="container">
+        <h2 class="section-title">The Strict Black-Box TTA Setting</h2>
+        <p>
+            Most state-of-the-art vision models are now deployed as <strong>opaque APIs</strong>. In this setting the client can only submit a raw image and receive a probability vector in return, with no access to parameters, gradients, or intermediate features. Prior TTA work relies on exactly those missing signals.
+        </p>
+        <div class="figure">
+            <img src="assets/settings.png" alt="Black-Box TTA Setting">
+            <div class="figure-caption">
+                <strong>Figure 1. The strict black-box TTA setting.</strong>
+                The client only observes probabilities from the server-side API. Unlike white-box TTA, no gradients, parameters, or intermediate features are available. This is a practical but challenging regime for real-world API-based deployment.
+            </div>
+        </div>
+
+        <p class="table-caption" style="margin-top:16px;">Table 1. Comparison of TTA methods across key capabilities. We evaluate each method's requirements for accessing model parameters, internal tokens, intermediate features, and gradients, alongside its visual encoder architectural flexibility, support for different model types (Vision models (VMs) / Vision-Language models (VLMs)), query efficiency (one API call per test sample), and inference latency. BETA is the only strict black-box method that keeps a single API call per sample and real-time latency.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Access</th>
+                        <th style="text-align:left;">Method</th>
+                        <th>w/o Params.</th>
+                        <th>w/o Tokens</th>
+                        <th>w/o Feats.</th>
+                        <th>w/o Grad.</th>
+                        <th>Arch-Agnostic</th>
+                        <th>VMs</th>
+                        <th>VLMs</th>
+                        <th>1 API/Sample</th>
+                        <th>Low Latency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="access-tag white-box">White</span></td>
+                        <td class="method-name">TENT</td>
+                        <td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag white-box">White</span></td>
+                        <td class="method-name">TPT</td>
+                        <td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag gray-box">Gray</span></td>
+                        <td class="method-name">T3A</td>
+                        <td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag gray-box">Gray</span></td>
+                        <td class="method-name">FOA</td>
+                        <td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td><td>ViT-only</td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag gray-box">Gray</span></td>
+                        <td class="method-name">B<sup>2</sup>TPT</td>
+                        <td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td>ViT-only</td><td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag gray-box">Gray</span></td>
+                        <td class="method-name">BCA</td>
+                        <td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name">LAME</td>
+                        <td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name">Augmentation</td>
+                        <td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name">Purification</td>
+                        <td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name">ZOO</td>
+                        <td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td>
+                    </tr>
+                    <tr class="highlight">
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name"><strong>BETA (Ours)</strong></td>
+                        <td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- METHOD -->
+<section>
+    <div class="container">
+        <h2 class="section-title">Method Overview</h2>
+
+        <div class="figure">
+            <img src="assets/workflow.png" alt="BETA Workflow">
+            <div class="figure-caption">
+                <strong>Figure 2. Comparison of black-box TTA strategies.</strong>
+                <strong>(a)</strong> Output refinement (LAME) only post-processes predictions. <strong>(b)</strong> ZOO prompting needs many API calls per sample. <strong>(c)</strong> BETA uses a local steering model and prediction harmonization to create a tractable gradient pathway with one API call per sample.
+            </div>
+        </div>
+
+        <p>
+            BETA operates with two models: a frozen <strong>black-box target</strong> $f_B$ (e.g., a commercial API) and a lightweight <strong>local steering model</strong> $f_S$ with full gradient access. We learn an additive visual prompt $\delta$ and optimize it through the steering model's local gradients.
+        </p>
+
+        <h3 class="method-heading">Why naive gradient transfer fails</h3>
+        <p>
+            Gradients from a local surrogate do not transfer directly to a different black-box architecture. The per-example gradient cosine similarity between a ViT-B/16 target and a local ViT-S/16 or ResNet-18 is <em>near zero</em>.
+        </p>
+        <div class="figure">
+            <img src="assets/grad_vit.png" alt="Gradient similarity" style="max-width: 720px;">
+            <div class="figure-caption">
+                <strong>Figure 3. Gradient similarity is not transferable.</strong> Directly importing gradients from a small local model into the input update for a black-box target is ineffective. BETA instead <em>harmonizes predictions</em> to create a tractable optimization target.
+            </div>
+        </div>
+
+        <h3 class="method-heading">Prediction harmonization</h3>
+        <p>
+            Rather than transferring gradients, BETA fuses output <em>probabilities</em> from the two models into a single harmonized distribution $p_\alpha(x') = \alpha\,p_S(x') + (1-\alpha)\,p_B(x')$ and minimizes its entropy. This exposes a tractable asymmetric gradient pathway: the prompt $\delta$ is updated only through $f_S$'s gradients, while the black-box predictions $p_B$ enter as a <em>data-dependent mixing target</em>.
+        </p>
+
+        <div class="analytic-box">
+            <strong>Why harmonization helps (analytical view).</strong>
+            Let $p_m = \alpha p_S + (1-\alpha) p_B$ denote the harmonized distribution. Using the convexity of entropy, minimizing $H(p_m)$ upper-bounds a weighted combination of the two per-model entropies and a Jensen&#8239;Shannon alignment term between $p_S$ and $p_B$: $H(p_m) \;\leq\; \alpha H(p_S) + (1-\alpha) H(p_B) \;-\; \mathrm{JS}_\alpha(p_S \,\|\, p_B)$. Minimizing $H(p_m)$ therefore (i) sharpens the local view, (ii) softly nudges it toward the remote view, and (iii) does not require $f_B$'s gradients. This is exactly what a black-box TTA objective needs: a signal that is simultaneously confident and consistent with the opaque API, while remaining differentiable through $f_S$ alone.
+        </div>
+
+        <h3 class="method-heading">Stability: consistency and prompt-oriented filtering</h3>
+        <p>
+            Learning prompts from random initialization is brittle. BETA adds (i) a <strong>KL consistency</strong> term between clean and prompted predictions in the local view, and (ii) a <strong>prompt-learning-oriented reliable-and-diverse filter</strong> so the prompt is updated only from samples that give a stable learning signal.
+        </p>
+        <div class="figure">
+            <img src="assets/batch_acc_contrast_5rounds.png" alt="Stability" style="max-width: 720px;">
+            <div class="figure-caption">
+                <strong>Figure 4.</strong> Without stabilization, prompt learning collapses on hard corruptions (Contrast). BETA's consistency and filtering keep adaptation stable across 5 random seeds.
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN RESULTS -->
+<section>
+    <div class="container">
+        <h2 class="section-title">Main Results: ImageNet-C, ViT-B/16</h2>
+
+        <p class="table-caption">Table 2. Classification accuracy (%) on ImageNet-C (severity 5) with ViT-B/16 as the frozen black-box target. BETA surpasses all black-box baselines and several strong white-box methods, despite only seeing API probabilities.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Access</th>
+                        <th style="text-align:left;">Method</th>
+                        <th>Avg.</th>
+                        <th>Gain</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name">Source (no adapt)</td>
+                        <td>55.5</td>
+                        <td>n/a</td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag white-box">White</span></td>
+                        <td class="method-name">TENT</td>
+                        <td>59.6</td>
+                        <td><span class="gain">+4.1</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag white-box">White</span></td>
+                        <td class="method-name">SAR</td>
+                        <td>63.6</td>
+                        <td><span class="gain">+8.1</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag white-box">White</span></td>
+                        <td class="method-name">CoTTA</td>
+                        <td>61.6</td>
+                        <td><span class="gain">+6.1</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag white-box">White</span></td>
+                        <td class="method-name">ETA</td>
+                        <td>65.8</td>
+                        <td><span class="gain">+10.3</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag gray-box">Gray</span></td>
+                        <td class="method-name">T3A</td>
+                        <td>56.9</td>
+                        <td><span class="gain">+1.4</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag gray-box">Gray</span></td>
+                        <td class="method-name">FOA</td>
+                        <td>44.9</td>
+                        <td><span class="loss">&#8722;10.6</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name">LAME</td>
+                        <td>54.1</td>
+                        <td><span class="loss">&#8722;1.4</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name">ZOO-CMA</td>
+                        <td>54.5</td>
+                        <td><span class="loss">&#8722;1.0</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name">ZOO-RGF</td>
+                        <td>56.0</td>
+                        <td><span class="gain">+0.5</span></td>
+                    </tr>
+                    <tr class="highlight">
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name"><strong>BETA (Ours)</strong></td>
+                        <td><strong>62.6</strong></td>
+                        <td><span class="gain">+7.1</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="method-heading">Real-world commercial API (Clarifai)</h3>
+        <div class="figure">
+            <img src="assets/clarifai_api_budget.png" alt="Clarifai cost comparison" style="max-width: 640px;">
+            <div class="figure-caption">
+                <strong>Figure 5.</strong> On the Clarifai commercial API, BETA delivers a <strong>+5.2%</strong> accuracy gain for under <strong>$0.4</strong>. ZOO-based prompting requires over <strong>$100</strong> to reach a comparable point, a <strong>250&times;</strong> cost gap.
+            </div>
+        </div>
+
+        <h3 class="method-heading">Generalization beyond ImageNet-C</h3>
+
+        <p class="table-caption" style="margin-top:18px;">
+            Table 3. Fine-grained <strong>EuroSAT</strong> with CLIP ViT-B/16 as the target. BETA is the only strict black-box method and delivers the largest gain (+11.3%) with a single API query per sample, while gray-box prompting and ZERO-style variants need 64 to 448 queries.
+        </p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Access</th>
+                        <th style="text-align:left;">Method</th>
+                        <th>Acc. (%)</th>
+                        <th>Gain</th>
+                        <th>#API</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name">Source</td>
+                        <td>42.0</td>
+                        <td>n/a</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag gray-box">Gray</span></td>
+                        <td class="method-name">B&sup2;TPT (w/ tokens)</td>
+                        <td>46.8</td>
+                        <td><span class="gain">+4.8</span></td>
+                        <td>120</td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag gray-box">Gray</span></td>
+                        <td class="method-name">ZERO (w/ logits)</td>
+                        <td>39.6</td>
+                        <td><span class="loss">&#8722;2.4</span></td>
+                        <td>64</td>
+                    </tr>
+                    <tr>
+                        <td><span class="access-tag gray-box">Gray</span></td>
+                        <td class="method-name">ZERO_ensemble (w/ logits)</td>
+                        <td>43.8</td>
+                        <td><span class="gain">+1.8</span></td>
+                        <td>448</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td><span class="access-tag black-box">Black</span></td>
+                        <td class="method-name"><strong>BETA (Ours)</strong></td>
+                        <td><strong>53.3</strong></td>
+                        <td><span class="gain">+11.3</span></td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="table-caption" style="margin-top:22px;">
+            Table 4. Dermatology classification on <strong>Derm7pt</strong> with both a general-purpose CLIP ViT-B/16 and a domain-specialized BiomedCLIP as the black-box target. BETA gives consistent gains across very different backbones.
+        </p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Target (Black-box)</th>
+                        <th>Source</th>
+                        <th>LAME</th>
+                        <th>TT-Aug</th>
+                        <th>BETA (Ours)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="method-name">CLIP ViT-B/16</td>
+                        <td>55.9</td>
+                        <td>56.0</td>
+                        <td>57.1</td>
+                        <td><strong>58.6</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="method-name">BiomedCLIP</td>
+                        <td>60.9</td>
+                        <td>60.4</td>
+                        <td>61.3</td>
+                        <td><strong>62.1</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- LLM CONNECTION -->
+<section>
+    <div class="container">
+        <h2 class="section-title">Beyond Vision: a Test-Time <em>Advisor Strategy</em></h2>
+
+        <div class="llm-box">
+            <p>
+                BETA's core mechanism, <strong>a small local model shaping the behavior of a larger frozen remote model at inference time</strong>, is, we believe, a preview of how adaptation will work in the agent era. Anthropic describe a closely related pattern for LLM agents:
+            </p>
+            <blockquote>
+                &ldquo;The advisor strategy pairs a strong, expensive model as an advisor with a faster, cheaper model as an executor. The advisor sees the task and context up front and writes a plan&hellip; The executor then carries out that plan step-by-step, consulting the advisor when it hits a hard decision.&rdquo;
+                <cite>Anthropic, <a href="https://claude.com/blog/the-advisor-strategy" target="_blank">The Advisor Strategy</a> (2026)</cite>
+            </blockquote>
+            <p>
+                BETA is the <em>vision, test-time</em> version of the same design, with a twist: the expensive side is the <strong>executor</strong>, and the small local side is the <strong>advisor</strong>. The advisor has gradients but limited capacity; the executor has capacity but is opaque. The advisor does not change the executor's weights. It only <strong>shapes its input</strong> so that the executor's own computation lands on the correct answer.
+            </p>
+
+            <div class="analogy-grid">
+                <div>
+                    <h4>LLM advisor strategy</h4>
+                    <ul>
+                        <li>Strong advisor writes the plan</li>
+                        <li>Cheap executor runs it</li>
+                        <li>Advisor consulted on hard decisions</li>
+                        <li>Uses more tokens, not more training</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>BETA (vision, test-time)</h4>
+                    <ul>
+                        <li>Local steering model provides gradients</li>
+                        <li>Black-box API produces predictions</li>
+                        <li>Reliable-and-diverse filter consults only on trustworthy samples</li>
+                        <li>Uses a single API call, <em>not</em> retraining</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p style="margin-top:18px;">
+                We expect the <em>local-advisor-shapes-remote-executor</em> recipe to become a common pattern as AI stacks move to agents composed of many opaque sub-components, from vision APIs to retrieval systems, reward models, and tool APIs. BETA's prediction-harmonization and consistency-regularization objective is, in this light, a principled replacement for &ldquo;try many prompts and keep the best,&rdquo; and we see direct extensions to multi-modal agent pipelines and to LLM tool-use where tool outputs play the role of the opaque API.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- BIBTEX -->
+<section id="bibtex">
+    <div class="container">
+        <h2 class="section-title">BibTeX</h2>
+        <div class="bibtex-box" id="bibtex-content">
+<button class="copy-btn" onclick="copyBibtex()">Copy</button>@inproceedings{zhang2026adapting,
+  title={Adapting in the Dark: Efficient and Stable Test-Time Adaptation for Black-Box Models},
+  author={Yunbei Zhang and Shuaicheng Niu and Chengyi Cai and Feng Liu and Jihun Hamm},
+  booktitle={Third Workshop on Test-Time Updates (Main Track)},
+  year={2026},
+  url={https://openreview.net/forum?id=v56b8I1tua}
+}</div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div class="container">
+        &copy; 2026 Yunbei Zhang et al. &nbsp;&middot;&nbsp;
+        <a href="https://github.com/yunbeizhang/BETA">GitHub</a> &nbsp;&middot;&nbsp;
+        <a href="https://openreview.net/pdf?id=v56b8I1tua">Paper</a>
+    </div>
+</footer>
+
+<script>
+function copyBibtex() {
+    const bibtex = document.getElementById('bibtex-content').innerText.replace(/^Copy\s*/, '');
+    navigator.clipboard.writeText(bibtex).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        const orig = btn.innerText;
+        btn.innerText = 'Copied!';
+        setTimeout(() => { btn.innerText = orig; }, 1500);
+    });
+}
+</script>
+
+</body>
+</html>

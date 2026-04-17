@@ -1,0 +1,35 @@
+# Auxiliary / working materials, not part of the public release
+supp/
+26_Adapting_in_the_Dark_Effici.pdf
+paper_llm_paragraph_drafts.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Jupyter / IDE
+.ipynb_checkpoints/
+.idea/
+.vscode/
+.DS_Store
+
+# Experiment / logging artefacts
+outputs/
+wandb/
+runs/
+*.log
+*.out
+*.pt
+*.pth
+*.ckpt
+
+# Local data roots (point DATA_DIR at your own ImageNet / ImageNet-C copy)
+data/
