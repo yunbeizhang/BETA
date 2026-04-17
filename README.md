@@ -1,4 +1,4 @@
-# BETA: Adapting in the Dark. Efficient and Stable Test-Time Adaptation for Black-Box Models
+# Adapting in the Dark: Efficient and Stable Test-Time Adaptation for Black-Box Models
 
 <p align="center">
   🏆 <b>ICLR 2026 TTU Workshop &middot; Oral</b>
