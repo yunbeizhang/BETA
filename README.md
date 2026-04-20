@@ -6,7 +6,7 @@
 
 
 <p align="center">
-  <a href="https://openreview.net/pdf?id=v56b8I1tua"><img src="https://img.shields.io/badge/Paper-PDF-b31b1b?style=flat-square" alt="Paper PDF"></a>
+  <a href="https://arxiv.org/pdf/2604.15609"><img src="https://img.shields.io/badge/Paper-PDF-b31b1b?style=flat-square" alt="Paper PDF"></a>
   <a href="https://openreview.net/forum?id=v56b8I1tua"><img src="https://img.shields.io/badge/ICLR%202026%20TTU-Oral-AF5FFF?style=flat-square" alt="ICLR 2026 TTU Oral"></a>
   <a href="https://yunbeizhang.github.io/BETA/"><img src="https://img.shields.io/badge/Project%20Page-GitHub%20Pages-brightgreen?style=flat-square" alt="Project Page"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-green?style=flat-square" alt="License"></a>
@@ -25,7 +25,7 @@
 ## TODO
 
 - [x] Release code
-- [ ] arXiv preprint (coming soon)
+- [x] [arXiv preprint](https://arxiv.org/pdf/2604.15609)
 
 ## Abstract
 
