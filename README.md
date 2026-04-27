@@ -1,13 +1,13 @@
 # Adapting in the Dark: Efficient and Stable Test-Time Adaptation for Black-Box Models
 
 <p align="center">
-  🏆 <b>ICLR 2026 TTU Workshop &middot; Oral</b>
+  🏆 <b>ICLR 2026 TTU Workshop &middot; Best Paper Award</b>
 </p>
 
 
 <p align="center">
   <a href="https://arxiv.org/pdf/2604.15609"><img src="https://img.shields.io/badge/Paper-PDF-b31b1b?style=flat-square" alt="Paper PDF"></a>
-  <a href="https://openreview.net/forum?id=v56b8I1tua"><img src="https://img.shields.io/badge/ICLR%202026%20TTU-Oral-AF5FFF?style=flat-square" alt="ICLR 2026 TTU Oral"></a>
+  <a href="https://openreview.net/forum?id=v56b8I1tua"><img src="https://img.shields.io/badge/ICLR%202026%20TTU-Best%20Paper%20Award-AF5FFF?style=flat-square" alt="ICLR 2026 TTU Best Paper Award"></a>
   <a href="https://yunbeizhang.github.io/BETA/"><img src="https://img.shields.io/badge/Project%20Page-GitHub%20Pages-brightgreen?style=flat-square" alt="Project Page"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-green?style=flat-square" alt="License"></a>
 </p>
@@ -18,6 +18,7 @@
 
 ## News
 
+- 🏆 **Apr 27, 2026.** Received the **Best Paper Award** at the Third Workshop on Test-Time Updates (TTU).
 - **Apr 16, 2026.** Code released.
 - 🏆 **Mar 07, 2026.** Selected as **Oral Presentation** at the Third Workshop on Test-Time Updates (TTU).
 - **Mar 01, 2026.** Accepted to the Third Workshop on Test-Time Updates (TTU), ICLR 2026 Workshop.
