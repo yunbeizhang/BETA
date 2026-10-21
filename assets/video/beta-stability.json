@@ -1,0 +1,13 @@
+{
+  "file": "beta-stability.mp4",
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "duration_seconds": 20.5,
+  "active_seconds": 20,
+  "hold_seconds": 0.5,
+  "sha256": "02d43c2d9f33435a8c0f0aa3d055f1f2a7557bc885534098edaea685e5bd0e49",
+  "bytes": 568608,
+  "images": "Representative real ImageNet-C, EuroSAT, Derm7pt inputs; not per-image predictions",
+  "data": "Original paper Figure batch_acc_contrast.pdf vector curves; actual sampled path, with display interpolation only"
+}

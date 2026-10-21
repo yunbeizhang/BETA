@@ -1,11 +1,12 @@
 # Adapting in the Dark: Efficient and Stable Test-Time Adaptation for Black-Box Models
 
 <p align="center">
-  🏆 <b>ICLR 2026 TTU Workshop &middot; Best Paper Award</b>
+  <b>NeurIPS 2026</b> &nbsp; | &nbsp; 🏆 <b>ICLR 2026 TTU Workshop &middot; Best Paper Award</b>
 </p>
 
 
 <p align="center">
+  <img src="https://img.shields.io/badge/NeurIPS-2026-6A1B9A?style=flat-square" alt="Accepted to NeurIPS 2026">
   <a href="https://arxiv.org/pdf/2604.15609"><img src="https://img.shields.io/badge/Paper-PDF-b31b1b?style=flat-square" alt="Paper PDF"></a>
   <a href="https://openreview.net/forum?id=v56b8I1tua"><img src="https://img.shields.io/badge/ICLR%202026%20TTU-Best%20Paper%20Award-AF5FFF?style=flat-square" alt="ICLR 2026 TTU Best Paper Award"></a>
   <a href="https://yunbeizhang.github.io/BETA/"><img src="https://img.shields.io/badge/Project%20Page-GitHub%20Pages-brightgreen?style=flat-square" alt="Project Page"></a>
@@ -18,10 +19,43 @@
 
 ## News
 
+- **2026.** Accepted to **NeurIPS 2026**.
+
 - 🏆 **Apr 27, 2026.** Received the **Best Paper Award** at the Third Workshop on Test-Time Updates (TTU).
 - **Apr 16, 2026.** Code released.
 - 🏆 **Mar 07, 2026.** Selected as **Oral Presentation** at the Third Workshop on Test-Time Updates (TTU).
 - **Mar 01, 2026.** Accepted to the Third Workshop on Test-Time Updates (TTU), ICLR 2026 Workshop.
+
+## BETA in motion
+
+BETA adapts frozen prediction-only APIs through a lightweight local steering model, with **one API call per test image**. It works with **vision classifiers and vision-language models**, including **CLIP and BiomedCLIP**.
+
+### Same budget. More images.
+
+<p align="center"><img src="assets/gif/beta-budget.gif" width="820" alt="Continuously looping BETA versus ZOO flow, real input gallery, online accuracy and shared API budget"></p>
+
+The current homepage demo: a dedicated local ImageNet-C Contrast replay, with the learned prompt, API loop, accuracy and images processed shown together. The full $50 query budget processes **15,625 images with BETA versus 976 with ZOO**. Dollar values convert local query counts at the paper’s unit price. [MP4](assets/video/beta-budget.mp4)
+
+### Vision classifiers and vision-language models
+
+<p align="center"><img src="assets/gif/beta-model-families.gif" width="820" alt="BETA adapting ViT, CLIP and BiomedCLIP using real ImageNet-C, EuroSAT and Derm7pt examples"></p>
+
+| Model family | Black-box target | Dataset | Source | BETA | Gain |
+|---|---|---|---:|---:|---:|
+| Vision classifier | ViT-B/16 | ImageNet-C | 55.5 | **62.6** | +7.1 pp |
+| Vision-language model | CLIP ViT-B/16 | EuroSAT | 42.0 | **53.3** | +11.3 pp |
+| Vision-language model | CLIP ViT-B/16 | Derm7pt | 55.9 | **58.6** | +2.7 pp |
+| Vision-language model | BiomedCLIP | Derm7pt | 60.9 | **62.1** | +1.2 pp |
+
+Reported final accuracy (%); each BETA setting uses **one API call per image**. The video uses representative real inputs to illustrate the shared interface. [MP4](assets/video/beta-model-families.mp4)
+
+### Keep learning. Avoid collapse.
+
+<p align="center"><img src="assets/gif/beta-stability.gif" width="820" alt="Continuously unfolding original paper ablation curves for consistency, filtering and full BETA on ImageNet-C Contrast"></p>
+
+The original paper’s Contrast ablation curves show why **consistency regularization** and **prompt-oriented filtering** matter for stable online adaptation. [MP4](assets/video/beta-stability.mp4)
+
+All three GIFs loop continuously in the README; the [project page](https://yunbeizhang.github.io/BETA/#demos) uses silent looping MP4s. [Media sources and reproduction](docs/media/README.md).
 
 ## TODO
 
@@ -82,9 +116,9 @@ If you find this work useful, please cite:
 @inproceedings{zhang2026adapting,
   title={Adapting in the Dark: Efficient and Stable Test-Time Adaptation for Black-Box Models},
   author={Yunbei Zhang and Shuaicheng Niu and Chengyi Cai and Feng Liu and Jihun Hamm},
-  booktitle={Third Workshop on Test-Time Updates (Main Track)},
+  booktitle={Advances in Neural Information Processing Systems},
   year={2026},
-  url={https://openreview.net/forum?id=v56b8I1tua}
+  url={https://arxiv.org/abs/2604.15609}
 }
 ```
 

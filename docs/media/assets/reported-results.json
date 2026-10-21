@@ -1,0 +1,31 @@
+{
+  "ImageNet-C": {
+    "model": "ViT-B/16",
+    "source": 55.5,
+    "beta": 62.6,
+    "family": "vision classifier",
+    "paper": "neurips_2026.tex, efficiency table"
+  },
+  "EuroSAT": {
+    "model": "CLIP ViT-B/16",
+    "source": 42.0,
+    "beta": 53.3,
+    "family": "vision-language model",
+    "paper": "app.tex, tab:eurosat"
+  },
+  "Derm7pt": {
+    "models": {
+      "CLIP ViT-B/16": {
+        "source": 55.9,
+        "beta": 58.6
+      },
+      "BiomedCLIP": {
+        "source": 60.9,
+        "beta": 62.1
+      }
+    },
+    "family": "vision-language models",
+    "paper": "neurips_2026.tex, tab:derm7pt"
+  },
+  "display": "Final reported accuracies; representative images and workflow animation, not per-image predictions or a new run."
+}

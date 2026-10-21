@@ -1,0 +1,56 @@
+[
+  {
+    "file": "0.jpg",
+    "source": "/data/derm_data/derm7pt/images/A1l/Aal001.jpg",
+    "size": [
+      640,
+      427
+    ],
+    "use": "Representative Derm7pt input; not a measured per-image adaptation result"
+  },
+  {
+    "file": "1.jpg",
+    "source": "/data/derm_data/derm7pt/images/Ael/Ael413.jpg",
+    "size": [
+      640,
+      427
+    ],
+    "use": "Representative Derm7pt input; not a measured per-image adaptation result"
+  },
+  {
+    "file": "2.jpg",
+    "source": "/data/derm_data/derm7pt/images/FDL/Fdl002.jpg",
+    "size": [
+      640,
+      427
+    ],
+    "use": "Representative Derm7pt input; not a measured per-image adaptation result"
+  },
+  {
+    "file": "3.jpg",
+    "source": "/data/derm_data/derm7pt/images/Gzl/gzl13.jpg",
+    "size": [
+      640,
+      426
+    ],
+    "use": "Representative Derm7pt input; not a measured per-image adaptation result"
+  },
+  {
+    "file": "4.jpg",
+    "source": "/data/derm_data/derm7pt/images/NIL/NIL055.JPG",
+    "size": [
+      640,
+      427
+    ],
+    "use": "Representative Derm7pt input; not a measured per-image adaptation result"
+  },
+  {
+    "file": "5.jpg",
+    "source": "/data/derm_data/derm7pt/images/New/newl059.jpg",
+    "size": [
+      640,
+      427
+    ],
+    "use": "Representative Derm7pt input; not a measured per-image adaptation result"
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "scope": "Dedicated local Contrast replay for homepage illustration, separate from final paper benchmark tables",
+  "billing": {
+    "type": "simulated conversion of local model queries",
+    "usd_per_image_query": 0.0032,
+    "source": "rate stated in the paper; no commercial requests made",
+    "cap_usd": 50.0
+  },
+  "data": {
+    "dataset": "ImageNet-C Contrast severity 5",
+    "target": "ViT-B/16",
+    "steering": "ViT-S/16",
+    "seed": 2020,
+    "batch_size": 64,
+    "beta_batches": 245,
+    "zoo_batches": 16,
+    "beta_images": 15625,
+    "zoo_images": 976,
+    "beta_queries": 15625,
+    "zoo_queries": 15616,
+    "zoo_method": "Original BVR_ZOO_SPSC (SPSA-GC); sp_avg=7 gives 14 finite-difference + 2 output calls = 16 total"
+  },
+  "endpoint_rolling_accuracy_percent": {
+    "Source": 31.888544891640866,
+    "ZOO": 30.327868852459016,
+    "BETA": 54.3859649122807
+  },
+  "source_sha256": {
+    "main_rebut.py": "c3eae04f482a047fcc89cb78ad0efd2df84d93c4174ca721fe29bc4e22223dfb",
+    "tta_library/beta_rebut.py": "1422031217dc85ecd01ac09f8fa69fcd09c71f342092b11dd5d0bc5bb1cca29a",
+    "tta_library/bvr_zoo_spsc.py": "c14129431a2556dca8d7811fb9577c5c300d44a96d3c032a57be5fb01d6d2678",
+    "models/prompter.py": "53e99217d1e3506df84c3dbba533152c87a29cd345946af7d40a3917c11ac933"
+  },
+  "gallery": "BETA every sixth real batch plus final batch; ZOO all 16 representative batch images. All measured results and counters remain complete. API packets are a lower-frequency mechanism schematic."
+}

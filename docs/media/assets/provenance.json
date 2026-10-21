@@ -1,0 +1,136 @@
+{
+  "imagenetc": [
+    {
+      "file": "imagenetc/0.jpg",
+      "sha256": "2a45a0e4b9f4b567e62d621e6cf6ba09a9a2beee9ecd30edc0164425fae10c21"
+    },
+    {
+      "file": "imagenetc/1.jpg",
+      "sha256": "4ea2033ffa6821d55f57270352bb1109fc3592777a3aa9e73229f9e890bf8cf7"
+    },
+    {
+      "file": "imagenetc/2.jpg",
+      "sha256": "5f4209fe41d961aed012ef62f68c0d11e5dc313e4e0097341351c66346adb7b9"
+    },
+    {
+      "file": "imagenetc/3.jpg",
+      "sha256": "7fe70d9c99975054c8d5a955ec04123f4f5d12e30d1320295edc23d934bd6553"
+    },
+    {
+      "file": "imagenetc/4.jpg",
+      "sha256": "840df9108c6ec6d89ed128c6aef6b864e17c20428e1c06fc79d70b3945a89e83"
+    },
+    {
+      "file": "imagenetc/5.jpg",
+      "sha256": "668c93067d18395f34020530c1b762df184e3748090e7871a8cb71bafa0961c9"
+    },
+    {
+      "file": "imagenetc/6.jpg",
+      "sha256": "834ae32278f06b3184a5bba9bbe566847fc4c74fc9816b589beddacdae0dd525"
+    },
+    {
+      "file": "imagenetc/7.jpg",
+      "sha256": "b6d9dd46af9a620e2f1988455d938a85fe8b53d16c27732d00c1684ae1cd6a6e"
+    }
+  ],
+  "eurosat": [
+    {
+      "file": "eurosat/0.jpg",
+      "sha256": "f733d6f5d13be0bfe05161cc4df3416e31880c4371cbde9ca85e5409ff4fa78d"
+    },
+    {
+      "file": "eurosat/1.jpg",
+      "sha256": "5a3acb72f2fda3191055b4a4101debd0bf38bd81dc54f817a32ece9dbbd728cb"
+    },
+    {
+      "file": "eurosat/2.jpg",
+      "sha256": "2e355fe6566d6b085f45ddca0168960e4ad80ad4c235cd2554eb27261a314d95"
+    },
+    {
+      "file": "eurosat/3.jpg",
+      "sha256": "86ab6029b5afeca72d6848092d6c464624f73e29a7e402d7c4ed8943c1424a57"
+    },
+    {
+      "file": "eurosat/4.jpg",
+      "sha256": "6d42d57affd09e21589034b76c1cb5f79177b506980a4884588f6bf14bb89f57"
+    },
+    {
+      "file": "eurosat/5.jpg",
+      "sha256": "2685474801840d94a02aac1203f6eaa0a4af87d76404ec74abb983019a85439e"
+    },
+    {
+      "file": "eurosat/6.jpg",
+      "sha256": "89d3d31f8adb3d26059aa96ef96337e006199d78cd906a8b777df96161c8a7ac"
+    },
+    {
+      "file": "eurosat/7.jpg",
+      "sha256": "bd3f1093426448eeaeba6b00683e138d429ba484757c2b9622f53babb835d384"
+    }
+  ],
+  "derm7pt": [
+    {
+      "file": "derm7pt/0.jpg",
+      "sha256": "7838b8acce792aa9e0ef749c032390efc5ff93260b86aec371df44212ba4cefc"
+    },
+    {
+      "file": "derm7pt/1.jpg",
+      "sha256": "4241a3e056cfae31d840e34d1c63df3baf20d731b21ea2ec0f936c26731220a9"
+    },
+    {
+      "file": "derm7pt/2.jpg",
+      "sha256": "3c65120ad40f5db30af599c21f826372441e3975e7cba0961c13cd56d4ce95c4"
+    },
+    {
+      "file": "derm7pt/3.jpg",
+      "sha256": "0474cd7e05b38e5ecad9f04f737dbb0c4552c6aae1a69be1dd19d74102c20294"
+    },
+    {
+      "file": "derm7pt/4.jpg",
+      "sha256": "6d0491d975b1e249af47dcbd6be093309722cad1d5487b4717fd9f38bf2e34c9"
+    },
+    {
+      "file": "derm7pt/5.jpg",
+      "sha256": "a0e8a1ad7a13c49df1e7af9f82808309c54c06df95c2462309436cf63948b6e9"
+    }
+  ],
+  "contrast": [
+    {
+      "file": "contrast/0.jpg",
+      "sha256": "0682bc4fec9a680e48f389c4770f6d41a786e25a63ee4f8b8e6f5c99dec4cdaf"
+    },
+    {
+      "file": "contrast/1.jpg",
+      "sha256": "eef33afe664f168750f818ba194d6c212de765fc17d41fc7f9e87802cada41a9"
+    },
+    {
+      "file": "contrast/2.jpg",
+      "sha256": "959f74640d20613cb9fe12b5a9f20806b5d2de39e3801348efdca0f315d67dfd"
+    },
+    {
+      "file": "contrast/3.jpg",
+      "sha256": "ab2f1a058c35d4977bd685e0e8b23015a0146d5559a004ad1cb5095133a885b0"
+    },
+    {
+      "file": "contrast/4.jpg",
+      "sha256": "740d07c37ce959413b9c2e8059d17e73758ed02585991edc3ebd9f46eb35863e"
+    },
+    {
+      "file": "contrast/5.jpg",
+      "sha256": "8469e29a25b60109a2a2f64ddc126d48d56a0a4dd0c6309cd79078dc4f9cb82a"
+    },
+    {
+      "file": "contrast/6.jpg",
+      "sha256": "e1430070997e7a6440a2517ec55c6bd985c4cc5358fc796d9dd9251af9f88a55"
+    },
+    {
+      "file": "contrast/7.jpg",
+      "sha256": "8a8ca209cf08b04002f1ec7fa3e6d77aaf39df0da2914151a918063e43236f0d"
+    }
+  ],
+  "image_source_notes": {
+    "imagenetc": "Ada 1 /data/ImageNet-C, severity 5; retained multi-class sample pack in NIPS26/prompt-homepage-videos-20261018/selected-v3/assets/multiclass",
+    "eurosat": "Ada 1 dataset examples retained in prompt-homepage-videos-20261018/assets/ada1/images/eurosat; label-free representative gallery",
+    "derm7pt": "See derm7pt/sources.json for exact public-dataset input paths",
+    "contrast": "Actual ImageNet-C severity-5 Contrast examples, with native low contrast retained"
+  }
+}

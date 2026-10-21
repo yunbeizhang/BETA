@@ -1,0 +1,13 @@
+{
+  "file": "beta-model-families.mp4",
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "duration_seconds": 20.5,
+  "active_seconds": 20,
+  "hold_seconds": 0.5,
+  "sha256": "75ed580acd291641903457e8369d6b679e318b7391af5ea229952099fc0e13a8",
+  "bytes": 841168,
+  "images": "Representative real ImageNet-C, EuroSAT, Derm7pt inputs; not per-image predictions",
+  "data": "Reported final paper tables"
+}

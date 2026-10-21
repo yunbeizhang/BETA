@@ -1,0 +1,74 @@
+{
+  "beta-budget": {
+    "mp4": "assets/video/beta-budget.mp4",
+    "sha256": "c839fa669771ae5b21e71ec4a9ee77beac636068eaa2f8f0b078fb7a6e97a98c",
+    "bytes": 1217771,
+    "duration_seconds": 21.0,
+    "size": [
+      960,
+      560
+    ],
+    "fps": "60/1",
+    "codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio": false,
+    "faststart": true,
+    "full_decode": true,
+    "moving_frame_fraction": 1.0,
+    "gif": {
+      "file": "assets/gif/beta-budget.gif",
+      "frames": 252,
+      "loop": 0,
+      "duration_seconds": 21.0,
+      "bytes": 4731439
+    }
+  },
+  "beta-model-families": {
+    "mp4": "assets/video/beta-model-families.mp4",
+    "sha256": "75ed580acd291641903457e8369d6b679e318b7391af5ea229952099fc0e13a8",
+    "bytes": 841168,
+    "duration_seconds": 20.5,
+    "size": [
+      1280,
+      720
+    ],
+    "fps": "30/1",
+    "codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio": false,
+    "faststart": true,
+    "full_decode": true,
+    "moving_frame_fraction": 1.0,
+    "gif": {
+      "file": "assets/gif/beta-model-families.gif",
+      "frames": 246,
+      "loop": 0,
+      "duration_seconds": 20.5,
+      "bytes": 4907753
+    }
+  },
+  "beta-stability": {
+    "mp4": "assets/video/beta-stability.mp4",
+    "sha256": "02d43c2d9f33435a8c0f0aa3d055f1f2a7557bc885534098edaea685e5bd0e49",
+    "bytes": 568608,
+    "duration_seconds": 20.5,
+    "size": [
+      1280,
+      720
+    ],
+    "fps": "30/1",
+    "codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio": false,
+    "faststart": true,
+    "full_decode": true,
+    "moving_frame_fraction": 1.0,
+    "gif": {
+      "file": "assets/gif/beta-stability.gif",
+      "frames": 246,
+      "loop": 0,
+      "duration_seconds": 20.5,
+      "bytes": 3153668
+    }
+  }
+}

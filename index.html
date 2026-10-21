@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BETA: Adapting in the Dark. Test-Time Adaptation for Black-Box Models</title>
+    <title>BETA · NeurIPS 2026 · Adapting in the Dark</title>
+    <meta name="description" content="BETA: one-call test-time adaptation for black-box vision classifiers and vision-language models. NeurIPS 2026; ICLR 2026 TTU Best Paper Award.">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
@@ -389,18 +390,21 @@
             font-size: 13px;
         }
     </style>
+    <link rel="stylesheet" href="assets/site-refresh.css">
 </head>
 <body>
 
 <!-- HERO -->
 <header class="hero">
     <div class="container">
-        <span class="venue-badge">
-            &#127942;&nbsp; ICLR 2026 TTU Workshop <span class="sep">&middot;</span> Best Paper Award
-        </span>
+        <div class="venue-strip">
+            <span class="venue-badge conference-badge">NeurIPS 2026</span>
+            <a class="venue-badge award-badge" href="https://openreview.net/forum?id=v56b8I1tua">🏆 ICLR 2026 TTU Workshop · Best Paper Award</a>
+        </div>
         <h1>Adapting in the Dark</h1>
         <div class="tagline">Efficient and Stable Test-Time Adaptation for Black-Box Models</div>
 
+        <p class="hero-summary">One prediction-only API call. A lightweight local steering model.<br>Test-time adaptation for vision classifiers <em>and</em> vision-language models.</p>
         <div class="authors">
             Yunbei Zhang<sup>1</sup>,
             Shuaicheng Niu<sup>2</sup>,
@@ -416,6 +420,7 @@
             <a class="btn btn-outline" href="https://github.com/yunbeizhang/BETA" target="_blank">
                 <i class="fab fa-github"></i> Code
             </a>
+            <a class="btn btn-outline" href="#demos"><i class="fas fa-circle-play"></i> BETA in motion</a>
             <a class="btn btn-outline" href="#bibtex">
                 <i class="fas fa-quote-right"></i> BibTeX
             </a>
@@ -423,7 +428,51 @@
     </div>
 </header>
 
+<nav class="story-nav" aria-label="Project sections"><a href="#news">News</a><a href="#demos">Demos</a><a href="#model-families">VMs + VLMs</a><a href="#stability">Stability</a><a href="#results">Results</a><a href="#bibtex">Citation</a></nav>
 <main>
+<section id="news" class="refresh-news"><div class="container">
+    <h2 class="section-title">News</h2>
+    <div class="news"><ul>
+        <li><span class="date">2026</span><span class="pill">NeurIPS</span> Accepted to <strong>NeurIPS 2026</strong>.</li>
+        <li><span class="date">Apr 27, 2026</span>🏆 <strong>Best Paper Award</strong> at the ICLR 2026 Third Workshop on Test-Time Updates (TTU).</li>
+        <li><span class="date">Apr 16, 2026</span>Code released.</li>
+        <li><span class="date">Mar 07, 2026</span>Selected for an oral presentation at ICLR 2026 TTU.</li>
+    </ul></div>
+</div></section>
+
+<section id="demos" class="motion-section"><div class="container">
+    <p class="eyebrow">BETA IN MOTION</p>
+    <h2 class="motion-title">One call. More adaptation.</h2>
+    <p class="motion-intro">A small local model supplies gradients. The frozen API supplies predictions. BETA brings them together through prediction harmonization.</p>
+    <article class="motion-story">
+        <div class="story-heading"><span class="story-number">01 / EFFICIENCY</span><span class="story-context">ImageNet-C Contrast · ViT-B/16</span></div>
+        <div class="media-frame light-frame"><video class="research-loop" autoplay loop muted playsinline preload="auto" disablepictureinpicture controlslist="nodownload noplaybackrate noremoteplayback" poster="assets/video/beta-budget-poster.png" data-gif="assets/gif/beta-budget.gif" aria-label="BETA and ZOO process real corrupted images under a shared API budget"><source src="assets/video/beta-budget.mp4" type="video/mp4"></video></div>
+        <div class="story-caption"><h3>Same budget. More images.</h3><p>Watch the input stream, learned prompt, query loop and accuracy move together. A dedicated local Contrast replay reaches a $50 query budget with 15,625 images processed by BETA and 976 by ZOO. Dollar values convert local query counts at the paper’s unit price.</p></div>
+    </article>
+    <div class="story-takeaways"><div><strong>1</strong><span>API call per test image</span></div><div><strong>VMs + VLMs</strong><span>One prediction-only interface</span></div><div><strong>Local gradients</strong><span>The service model stays frozen</span></div></div>
+</div></section>
+
+<section id="model-families" class="coverage-section"><div class="container">
+    <p class="eyebrow">02 / MODEL &amp; DOMAIN COVERAGE</p>
+    <h2 class="motion-title">From vision classifiers to vision-language models.</h2>
+    <p class="motion-intro">The same BETA interface adapts ViT classifiers, CLIP and BiomedCLIP. The evidence spans corrupted natural images, satellite land cover and medical skin-lesion classification.</p>
+    <div class="coverage-switcher" aria-label="Explore reported benchmark results">
+        <div class="benchmark-tabs" role="tablist" aria-label="Benchmark"><button role="tab" aria-selected="true" data-benchmark="imagenet">ViT · ImageNet-C</button><button role="tab" aria-selected="false" data-benchmark="eurosat">CLIP · EuroSAT</button><button role="tab" aria-selected="false" data-benchmark="dermclip">CLIP · Derm7pt</button><button role="tab" aria-selected="false" data-benchmark="dermbiomed">BiomedCLIP · Derm7pt</button></div>
+        <div class="benchmark-panel" role="tabpanel" aria-live="polite"><div><span id="benchmark-family" class="family-label">Vision classifier</span><h3 id="benchmark-title">ImageNet-C · ViT-B/16</h3><p id="benchmark-context">Corrupted natural images · severity 5</p><span class="one-call-tag">1 API call / image</span></div><div class="benchmark-bars"><div class="bench-row"><span>Source</span><div class="bench-track"><i id="source-bar" style="width:55.5%"></i></div><strong id="source-value">55.5</strong></div><div class="bench-row ours"><span>BETA</span><div class="bench-track"><i id="beta-bar" style="width:62.6%"></i></div><strong id="beta-value">62.6</strong></div><p><strong id="benchmark-gain">+7.1 percentage points</strong><span>Reported accuracy (%)</span></p></div></div>
+    </div>
+    <article class="motion-story dark-story">
+        <div class="media-frame"><video class="research-loop" autoplay loop muted playsinline preload="metadata" disablepictureinpicture poster="assets/video/beta-model-families-poster.png" data-gif="assets/gif/beta-model-families.gif" aria-label="BETA works with a vision classifier and vision-language models on ImageNet-C, EuroSAT and Derm7pt"><source src="assets/video/beta-model-families.mp4" type="video/mp4"></video></div>
+        <div class="story-caption"><h3>One interface. Different model families.</h3><p>Real dataset examples pass through the same local-steering recipe. Numbers show the paper’s reported final accuracies: EuroSAT 42.0 → 53.3; Derm7pt 55.9 → 58.6 with CLIP and 60.9 → 62.1 with BiomedCLIP.</p></div>
+    </article>
+</div></section>
+
+<section id="stability" class="stability-section"><div class="container">
+    <p class="eyebrow">03 / STABLE ONLINE ADAPTATION</p>
+    <h2 class="motion-title">Keep learning. Avoid collapse.</h2>
+    <p class="motion-intro">Prediction harmonization opens a gradient pathway. Consistency regularization and prompt-oriented filtering keep that pathway useful as the stream continues.</p>
+    <article class="motion-story dark-story"><div class="media-frame"><video class="research-loop" autoplay loop muted playsinline preload="metadata" disablepictureinpicture poster="assets/video/beta-stability-poster.png" data-gif="assets/gif/beta-stability.gif" aria-label="Original paper ablation curves show BETA remaining stable while removing consistency or filtering degrades adaptation"><source src="assets/video/beta-stability.mp4" type="video/mp4"></video></div><div class="story-caption"><h3>The stabilizers matter.</h3><p>The original Contrast ablation curves unfold across 788 online steps. Removing consistency collapses; removing filtering degrades adaptation. The full method sustains improvement.</p></div></article>
+</div></section>
+
 
 <!-- ABSTRACT -->
 <section>
@@ -525,9 +574,9 @@
                         <td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td>
                     </tr>
                     <tr>
-                        <td><span class="access-tag black-box">Black</span></td>
+                        <td><span class="access-tag gray-box">Gray</span></td>
                         <td class="method-name">LAME</td>
-                        <td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td>
+                        <td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="cross-mark">&#10007;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td><td><span class="check-mark">&#10003;</span></td>
                     </tr>
                     <tr>
                         <td><span class="access-tag black-box">Black</span></td>
@@ -590,7 +639,9 @@
 
         <div class="analytic-box">
             <strong>Why harmonization helps (analytical view).</strong>
-            Let $p_m = \alpha p_S + (1-\alpha) p_B$ denote the harmonized distribution. Using the convexity of entropy, minimizing $H(p_m)$ upper-bounds a weighted combination of the two per-model entropies and a Jensen&#8239;Shannon alignment term between $p_S$ and $p_B$: $H(p_m) \;\leq\; \alpha H(p_S) + (1-\alpha) H(p_B) \;-\; \mathrm{JS}_\alpha(p_S \,\|\, p_B)$. Minimizing $H(p_m)$ therefore (i) sharpens the local view, (ii) softly nudges it toward the remote view, and (iii) does not require $f_B$'s gradients. This is exactly what a black-box TTA objective needs: a signal that is simultaneously confident and consistent with the opaque API, while remaining differentiable through $f_S$ alone.
+            The mixture $p_m = \alpha p_S + (1-\alpha) p_B$ satisfies the entropy decomposition
+            $H(p_m) = \alpha H(p_S) + (1-\alpha)H(p_B) + \mathrm{JS}_\alpha(p_S\,\|\,p_B)$.
+            With the black-box prediction held fixed during the local update, the prompt receives gradients from steering-model entropy and the Jensen–Shannon agreement term. The target therefore guides the update through its predictions while gradients flow through the local steering model.
         </div>
 
         <h3 class="method-heading">Stability: consistency and prompt-oriented filtering</h3>
@@ -609,7 +660,7 @@
 <!-- MAIN RESULTS -->
 <section>
     <div class="container">
-        <h2 class="section-title">Main Results: ImageNet-C, ViT-B/16</h2>
+        <h2 class="section-title" id="results">Main Results: ImageNet-C, ViT-B/16</h2>
 
         <p class="table-caption">Table 2. Classification accuracy (%) on ImageNet-C (severity 5) with ViT-B/16 as the frozen black-box target. BETA surpasses all black-box baselines and several strong white-box methods, despite only seeing API probabilities.</p>
         <div class="table-wrap">
@@ -666,7 +717,7 @@
                         <td><span class="loss">&#8722;10.6</span></td>
                     </tr>
                     <tr>
-                        <td><span class="access-tag black-box">Black</span></td>
+                        <td><span class="access-tag gray-box">Gray</span></td>
                         <td class="method-name">LAME</td>
                         <td>54.1</td>
                         <td><span class="loss">&#8722;1.4</span></td>
@@ -845,9 +896,9 @@
 <button class="copy-btn" onclick="copyBibtex()">Copy</button>@inproceedings{zhang2026adapting,
   title={Adapting in the Dark: Efficient and Stable Test-Time Adaptation for Black-Box Models},
   author={Yunbei Zhang and Shuaicheng Niu and Chengyi Cai and Feng Liu and Jihun Hamm},
-  booktitle={Third Workshop on Test-Time Updates (Main Track)},
+  booktitle={Advances in Neural Information Processing Systems},
   year={2026},
-  url={https://openreview.net/forum?id=v56b8I1tua}
+  url={https://arxiv.org/abs/2604.15609}
 }</div>
     </div>
 </section>
@@ -874,5 +925,6 @@ function copyBibtex() {
 }
 </script>
 
+<script src="assets/site-refresh.js"></script>
 </body>
 </html>
